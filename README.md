@@ -24,23 +24,26 @@ Tested and fully functional with Inkscape.
 Installation:
 
 - Upload Eggduino.ino with Arduino-IDE or similar tool to your Arudino (i.e. Uno)
-- Disable Autoreset on Arduinoboard (there are several ways to do this... Which one does not matter...)
 - Install Inkscape Tools wit Eggbot extension. Detailed instructions: (You yust need to complete Steps 1 and 2)
 http://wiki.evilmadscientist.com/Installing_software
+tested with  https://github.com/evil-mad/EggBot/releases/tag/2.7.1 
 
-- Because of an bug in the Eggbot-extension (Function findEiBotBoards()), the Eggduino cannot be detected by default.
-	Hopefully, the guys will fix this later on. But we can fix it on our own.
-    It is quiete easy:
+- to get it run with the uno you have to edit the file: ebb_serial.py in the extension folder:
+
+	in the function findPort you change the line:
+	if port[1].startswith("EiBotBoard"):  
+		to 
+	if port[1].startswith("USB2.0-Serial"):
 	
-        - Go to your Inkscape-Installationfolder and navigate to subfolder .\App\Inkscape\share\extensions
-		- open File "eggbot.py" in texteditor and search for line:
-			"Try any devices which seem to have EBB boards attached"
-                - comment that block with "#" like this:
-                		# Try any devices which seem to have EBB boards attached
-				# for strComPort in eggbot_scan.findEiBotBoards():
-				#	serialPort = self.testSerialPort( strComPort )
-				#	if serialPort:
-				#		self.svgSerialPort = strComPort
-				#		return serialPort
-		- In my version lines 1355-1360
- 
+	just change the String keep all blanks.
+	
+	in the function testPort you change the line
+	
+	serialPort = serial.Serial( comPort, timeout=1.0 ) # 1 second timeout!
+		to
+	serialPort = serial.Serial( comPort, baudrate=9600 ,timeout=1.0 ) # 1 second timeout! 
+	
+	
+	
+
+
